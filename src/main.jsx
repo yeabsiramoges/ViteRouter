@@ -15,6 +15,12 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "creators/:creatorId",
+        element: <Creator />,
+      },
+    ],
   },
   {
     path: "creators/:creatorId",
