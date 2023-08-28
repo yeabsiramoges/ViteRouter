@@ -6,19 +6,30 @@ import {
 } from "react-router-dom";
 
 import './index.css'
-import Root from "./routes/root";
+import  
+  Root, 
+  { 
+    loader as rootLoader,
+    action as rootAction, 
+} from "./routes/root";
 import ErrorPage from "./error-page";
-import Creator from "./routes/creator";
+import 
+  Creator, 
+  { loader as creatorLoader }  
+from "./routes/creator";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
+    loader: rootLoader,
+    action: rootAction,
     children: [
       {
         path: "creators/:creatorId",
         element: <Creator />,
+        loader: creatorLoader
       },
     ],
   },

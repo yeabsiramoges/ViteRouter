@@ -1,6 +1,24 @@
-import { Outlet, Link } from "react-router-dom";
+import { 
+    Outlet, 
+    Link,
+    useLoaderData,
+    Form
+} from "react-router-dom";
+
+import { getCreators, createCreator } from "../creators";
+
+export async function loader() {
+    const creators = await getCreators();
+    return { creators };
+}
+
+export async function action() {
+    const creator = await createCreator();
+    return { creator };
+  }
 
 export default function Root() {
+    const { creators } = useLoaderData();
     return (
       <>
         <div id="sidebar">
@@ -24,19 +42,33 @@ export default function Root() {
                 aria-live="polite"
               ></div>
             </form>
-            <form method="post">
+            <Form method="post">
               <button type="submit">New</button>
-            </form>
+            </Form>
           </div>
           <nav>
-            <ul>
-              <li>
-                <Link to={`/creators/1`}>Your Name</Link>
-              </li>
-              <li>
-                <Link to={`/creators/2`}>Your Friend</Link>
-              </li>
-            </ul>
+            {creators.length ? (
+                <ul>
+                {creators.map((creator) => (
+                    <li key={creator.id}>
+                    <Link to={`creators/${creator.id}`}>
+                        {creator.first || creator.last ? (
+                        <>
+                            {creator.first} {creator.last}
+                        </>
+                        ) : (
+                        <i>No Name</i>
+                        )}{" "}
+                        {creator.favorite && <span>★</span>}
+                    </Link>
+                    </li>
+                ))}
+                </ul>
+            ) : (
+                <p>
+                <i>No creators</i>
+                </p>
+            )}
           </nav>
         </div>
         <div id="detail">

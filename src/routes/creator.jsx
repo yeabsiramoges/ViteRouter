@@ -1,6 +1,13 @@
-import { Form } from "react-router-dom";
+import { Form, useLoaderData } from "react-router-dom";
+import { getCreator } from "../creators";
+
+export async function loader({ params }) {
+    const creator = await getCreator(params.creatorId);
+    return { creator };
+}
 
 export default function Contact() {
+  const { creator } = useLoaderData();
   const contact = {
     first: "Your",
     last: "Name",
